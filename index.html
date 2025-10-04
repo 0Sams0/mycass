@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quer namorar comigo?</title>
+  <style>
+    :root{
+      --bg: #fff0f5;
+      --card: #fff;
+      --accent: #ff4d6d;
+      --accent-2: #ff9bb0;
+      --text: #4a2c2c;
+      --muted: #8b5e5e;
+      --radius: 18px;
+    }
+    body{
+      margin:0;
+      font-family: "Dancing Script", cursive, "Inter", system-ui;
+      background: linear-gradient(180deg,#ffe4e9,#fff0f5);
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:24px;
+      flex-direction: column;
+    }
+    .card{
+      width:100%;
+      max-width:460px;
+      background: var(--card);
+      border-radius:var(--radius);
+      padding:24px;
+      text-align:center;
+      position:relative;
+      box-shadow: 0 8px 30px rgba(255,77,109,0.25);
+      overflow:hidden;
+    }
+    .emoji{
+      font-size:60px;
+      display:block;
+      margin-bottom:12px;
+      animation: pulse 1.4s infinite;
+    }
+    h1{
+      margin:6px 0 0 0;
+      font-size:26px;
+      font-family: "Dancing Script", cursive;
+    }
+    p.lead{
+      margin:10px 0 18px 0;
+      color:var(--muted);
+      font-size:17px;
+    }
+    .message{
+      background: #fff0f5;
+      border:2px dashed var(--accent-2);
+      border-radius:16px;
+      padding:16px;
+      margin-bottom:18px;
+      color:var(--text);
+      font-size:18px;
+      font-family:"Dancing Script", cursive;
+    }
+    .buttons{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:0;
+      padding:12px 18px;
+      border-radius:14px;
+      font-weight:600;
+      cursor:pointer;
+      font-size:16px;
+      min-width:130px;
+      font-family:"Inter",sans-serif;
+    }
+    .btn-accept{
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:white;
+      box-shadow: 0 6px 18px rgba(255,77,109,0.25);
+    }
+    .btn-decline{
+      background: transparent;
+      border:1px solid var(--accent-2);
+      color:var(--muted);
+    }
+    .small{
+      font-size:13px;
+      color:var(--muted);
+      margin-top:8px;
+    }
+    .heart {
+      position: absolute;
+      top: -10px;
+      font-size: 22px;
+      color: #ff4d6d;
+      animation: fall 6s linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity:1; }
+      100% { transform: translateY(600px) rotate(360deg); opacity:0; }
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    .modal {
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.5);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease;
+    }
+    .modal.open{
+      opacity:1;
+      pointer-events:auto;
+    }
+    .modal-card{
+      background:#fff0f5;
+      padding:22px;
+      border-radius:16px;
+      text-align:center;
+      box-shadow:0 10px 40px rgba(0,0,0,0.3);
+      width:90%;
+      max-width:380px;
+    }
+    .modal h2{ font-family:"Dancing Script",cursive; margin:10px 0; color:var(--accent);}
+    iframe.spotify-player{
+      border-radius:12px;
+      margin-top:20px;
+      width:100%;
+      height:80px;
+      border:0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="emoji">💘</span>
+    <h1 id="title">Quer namorar comigo?</h1>
+    <p class="lead">Um pedido feito com muito carinho só para você 💖</p>
+    <div class="message">
+      <strong>Cassandra</strong><br/>
+      <span>Você aceita namorar comigo?</span>
+    </div>
+    <div class="buttons">
+      <button class="btn-accept" id="acceptBtn">Sim, bobinha 💕</button>
+      <button class="btn-decline" id="declineBtn">Claro, Sami 💖</button>
+    </div>
+  </div>
+
+  <!-- Player do Spotify -->
+  <iframe class="spotify-player"
+    src="https://open.spotify.com/embed/track/5kWJVS8i8NW1s21Ep3dG3i?utm_source=generator"
+    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+    loading="lazy">
+  </iframe>
+
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h2 id="modalTitle"></h2>
+      <p id="modalText"></p>
+      <button class="btn-accept" id="closeModal">Fechar</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const closeModal = document.getElementById('closeModal');
+
+    document.getElementById('acceptBtn').addEventListener('click', ()=>{
+      modal.classList.add('open');
+      modalTitle.textContent = "Ela disse SIM! 💍";
+      modalText.textContent = "Parabéns, agora vocês têm uma nova história para escrever juntos!";
+    });
+    document.getElementById('declineBtn').addEventListener('click', ()=>{
+      modal.classList.add('open');
+      modalTitle.textContent = "Ela disse CLARO! 💞";
+      modalText.textContent = "Que lindo, Cassandra e Sami agora são um casal!";
+    });
+    closeModal.addEventListener('click', ()=> modal.classList.remove('open'));
+
+    function createHeart(){
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random()*100 + "vw";
+      heart.style.animationDuration = (3+Math.random()*3) + "s";
+      document.body.appendChild(heart);
+      setTimeout(()=>heart.remove(),6000);
+    }
+    setInterval(createHeart,800);
+  </script>
+</body>
+</html>
